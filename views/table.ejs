@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Data</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+
+</head>
+
+<body>
+    <!-- Include the navbar -->
+    <%- include('navbar') %>
+    <h1>CSV Data</h1>
+    <input type="text" id="search" placeholder="Search..." onkeyup="searchTable()">
+
+    <table>
+        <thead>
+            <tr>
+                <% headers.forEach(header => { %>
+                    <th onclick="sortTable('<%= header %>')"><%= header %></th>
+                <% }) %>
+            </tr>
+        </thead>
+        <tbody id="csvTableBody">
+            <% data.forEach(row => { %>
+                <tr>
+                    <% headers.forEach(header => { %>
+                        <td data-column="<%= header %>"><%= row[header] || '' %></td>
+                    <% }) %>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <div id="paginationControls"></div>
+
+<!-- Dropdown for selecting X-axis column -->
+<label for="xAxisColumn">Select X-Axis Column:</label>
+<select id="xAxisColumn">
+    <% headers.forEach(header => { %>
+        <option value="<%= header %>"><%= header %></option>
+    <% }) %>
+</select>
+
+<!-- Dropdown for selecting Y-axis column -->
+<label for="yAxisColumn">Select Y-Axis Column:</label>
+<select id="yAxisColumn">
+    <% headers.forEach(header => { %>
+        <option value="<%= header %>"><%= header %></option>
+    <% }) %>
+</select>
+
+<!-- Additional chart customization options -->
+<label for="chartType">Chart Type:</label>
+<select id="chartType">
+    <option value="bar">Bar</option>
+    <option value="line">Line</option>
+    <option value="pie">Pie</option>
+</select>
+
+<button onclick="generateChart()">Generate Chart</button>
+
+<!-- Modal for Chart -->
+<div id="chartModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeChartModal()">&times;</span>
+        <canvas id="myChart"></canvas>
+    </div>
+</div>
+
+
+
+    <script src="/script.js"></script>
+</body>
+</html>
